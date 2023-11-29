@@ -1,16 +1,22 @@
+player myPlayer;
+
 boolean menuOn = true, playOn = false, gameOverOn = false, colorsOn = false;
+boolean wKey = false, sKey = false, aKey = false, dKey = false;
+int colorNum = 0;
 
 void setup() {
   size(400, 400);
   frameRate(60);
   textAlign(CENTER);
   rectMode(CENTER);
+  myPlayer = new player();
 }
 
 void draw() {
   background(0, 50, 50);
 
   menu(menuOn);
+  play(playOn);
 }
 
 void menu(boolean n) {
@@ -18,7 +24,7 @@ void menu(boolean n) {
     textSize(25);
     fill(255);
     text("Dodge", width/2, 130);
-    
+
     textSize(15);
     fill(100);
     strokeWeight(2);
@@ -37,28 +43,71 @@ void menu(boolean n) {
   }
 }
 
+void menuClick(boolean n) {
+  if (n) {
+    if (mouseX >= 150 && mouseX <= 250) {
+      if (mouseY >= 160 && mouseY <= 190) {
+        fill(255);
+        rect(width/2, 175, 100, 25);
+        playOn = true;
+        println("Play button clicked");
+        menuOn = false;
+      }
+    }
+    if (mouseX >= 150 && mouseX <= 250) {
+      if (mouseY >= 210 && mouseY <= 240) {
+        fill(255);
+        rect(width/2, 225, 100, 30);
+        colorsOn = true;
+        println("Colors button clicked");
+        menuOn = false;
+      }
+    }
+    if (mouseX >= 150 && mouseX <= 250) {
+      if (mouseY >= 260 && mouseY <= 290) {
+        fill(255);
+        rect(width/2, 275, 100, 30);
+        println("Exit button clicked");
+        exit();
+      }
+    }
+  }
+}
+
+void play(boolean n) {
+  if (n) {
+    myPlayer.runPlayer();
+  }
+}
+
 void mousePressed() {
-  if (mouseX >= 150 && mouseX <= 250) {
-    if (mouseY >= 160 && mouseY <= 190) {
-      fill(255);
-      rect(width/2, 175, 100, 25);
-      playOn = true;
-      println("Play button clicked");
-    }
+  menuClick(menuOn);
+}
+
+void keyPressed() {
+  if (key == 'w' || key == 'W') {
+    wKey = true;
+  } else if (key == 's' || key == 'S') {
+    sKey = true;
   }
-  if (mouseX >= 150 && mouseX <= 250) {
-    if (mouseY >= 210 && mouseY <= 240) {
-      fill(255);
-      rect(width/2, 225, 100, 30);
-      colorsOn = true;
-      println("Colors button clicked");
-    }
+  if (key == 'a' || key == 'A') {
+    aKey = true;
+  } else if (key == 'd' || key == 'D') {
+    dKey = true;
   }
-  if (mouseX >= 150 && mouseX <= 250) {
-    if (mouseY >= 260 && mouseY <= 290) {
-      fill(255);
-      rect(width/2, 275, 100, 30);
-      println("Exit button clicked");
-    }
+}
+
+void keyReleased() {
+  if (key == 'w' || key == 'W') {
+    wKey = false;
+  }
+  if (key == 's' || key == 'S') {
+    sKey = false;
+  }
+  if (key == 'a' || key == 'A') {
+    aKey = false;
+  }
+  if (key == 'd' || key == 'D') {
+    dKey = false;
   }
 }
