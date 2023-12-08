@@ -1,4 +1,6 @@
+// Public class responsible for managing player and game mechanics
 public class player {
+  // Player variables
   PVector position;
   float speed;
   float playerR, playerG, playerB, outline;
@@ -7,9 +9,10 @@ public class player {
   float tokenDistance;
   int elapsedTime, seconds, tokenScore;
 
-
+  // Constructor to initialize player properties
   player(boolean initialize) {
     if (initialize) {
+      // Initializing player properties
       this.position = new PVector(width/2, width/2);
       this.speed = 3;
       this.playerR = 255;
@@ -19,12 +22,14 @@ public class player {
       this.unlock = new boolean[5];
       this.unlock[0] = true;
       this.score = 0;
+      // Setting unlock flags to false initially (except first unlock)
       for (int i = 1; i < unlock.length; i++) {
         this.unlock[i] = false;
       }
     }
   }
 
+  // Function to draw the player on the canvas
   void drawPlayer() {
     colorPick(colorNum);
     strokeWeight(1);
@@ -33,6 +38,7 @@ public class player {
     rect(position.x, position.y, 10, 10);
   }
 
+  // Function to handle player movement based on key inputs
   void playerMove() {
     if (wKey) {
       position.y = constrain(position.y - speed, 5, 395);
@@ -48,6 +54,7 @@ public class player {
     }
   }
 
+  // Function to handle and run player-related operations during gameplay
   void runPlayer() {
     playerMove();
     drawPlayer();
@@ -55,16 +62,20 @@ public class player {
     drawDistance(position, Object.tokenPosition, tokenDistance);
     timerPoints();
     playerCollision(position, Object.objPosition);
+    // Displays player score
     fill(255);
     textSize(20);
     textAlign(LEFT);
     text("Score: " + score, 5, 20);
   }
 
+  // Function to check for player collisions with obstacles
   void playerCollision(PVector player, ArrayList<PVector> objects) {
+    // Loop to check for collisions with each obstacle
     for (int i = 0; i < objects.size(); i++) {
       if ((player.x <= (objects.get(i).x + 20)) && (player.x >= (objects.get(i).x - 20))) {
         if ((player.y <= (objects.get(i).y + 20)) && (player.y >= (objects.get(i).y - 20))) {
+          // Ends game if player touches obstacle
           timerActive = false;
           gameScore = score;
           if (gameScore > highScore) {
@@ -78,9 +89,11 @@ public class player {
     }
   }
 
+  // Function to check for collecting the token
   void playerToken(PVector player, PVector token) {
     if ((player.x <= (token.x + 10)) && (player.x >= (token.x - 10))) {
       if ((player.y <= (token.y + 10)) && (player.y >= (token.y - 10))) {
+        // Increases score if player collects token and causes new one to spawn
         Object.tokenCollected = true;
         tokenScore += 5;
         tokensCollected += 1;
@@ -88,6 +101,7 @@ public class player {
     }
   }
 
+  // Function to draw the distance line between player and token
   void drawDistance(PVector player, PVector token, float distance) {
     distance = player.dist(token);
     strokeWeight(2);
@@ -95,24 +109,29 @@ public class player {
     line(player.x, player.y, token.x, token.y);
     noStroke();
 
+    // Display distance from token in text
     textSize(12);
     textAlign(RIGHT);
     text("Distance to token: " + (int)distance + "m", 395, 20);
     textAlign(CENTER);
   }
 
+  // Function to update player score and timer
   void timerPoints() {
     if (!eliminated) {
       if (!timerActive) {
+        // Starts timer for new game
         startTime = millis();
         timerActive = true;
       }
+      // Updates score every second alive with 1 point
       elapsedTime = millis() - startTime;
       seconds = (int)(elapsedTime / 1000.0);
       score = seconds + tokenScore;
     }
   }
 
+  // Function to set player color based on button pressed
   void colorPick(int n) {
     if (n==0) {
       playerR = 255;

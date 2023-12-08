@@ -1,11 +1,12 @@
+// Global variables for player and object, game states, and input flags
 player Player;
 object Object;
-
 boolean menuOn = true, playOn = false, eliminated = false, colorsOn = false;
 boolean wKey = false, sKey = false, aKey = false, dKey = false;
 int colorNum = 0;
 int gameScore, tokensCollected, highScore;
 
+// Setup for the drawing
 void setup() {
   size(400, 400);
   frameRate(60);
@@ -15,15 +16,18 @@ void setup() {
   Object = new object(menuOn);
 }
 
+
 void draw() {
   background(0, 50, 50);
 
+  // Different game screens/states
   menu(menuOn);
   play(playOn);
   gameOver(eliminated);
   colorMenu(colorsOn);
 }
 
+// Function to reset game stats
 void reset() {
   Object.tokenCollected = true;
   Object.objOffScreen = true;
@@ -33,13 +37,16 @@ void reset() {
   Player.tokenScore = 0;
 }
 
+// Function to display the main menu
 void menu(boolean n) {
   if (n) {
+    // Title
     textAlign(CENTER);
     textSize(25);
     fill(255);
     text("Dodge", width/2, 130);
 
+    // Play button
     textSize(15);
     fill(100);
     strokeWeight(2);
@@ -47,10 +54,14 @@ void menu(boolean n) {
     rect(width/2, 175, 100, 30);
     fill(255);
     text("Play", width/2, 180);
+
+    // Colors button
     fill(100);
     rect(width/2, 225, 100, 30);
     fill(255);
     text("Colors", width/2, 230);
+
+    // Exit button
     fill(100);
     rect(width/2, 275, 100, 30);
     fill(255);
@@ -58,39 +69,45 @@ void menu(boolean n) {
   }
 }
 
+// Function to handle mouse clicks in the menu
 void menuClick(boolean n) {
   if (n) {
+    // Play button click
     if (mouseX >= 150 && mouseX <= 250) {
       if (mouseY >= 160 && mouseY <= 190) {
         fill(255);
         rect(width/2, 175, 100, 25);
         menuOn = false;
         playOn = true;
-        println("Play button clicked");
+        println("Play button clicked"); // Debugging to make sure button works properly
       }
     }
+    // Colors button click
     if (mouseX >= 150 && mouseX <= 250) {
       if (mouseY >= 210 && mouseY <= 240) {
         fill(255);
         rect(width/2, 225, 100, 30);
         menuOn = false;
         colorsOn = true;
-        println("Colors button clicked");
+        println("Colors button clicked"); // Debugging to make sure button works properly
       }
     }
+    // Exit button click
     if (mouseX >= 150 && mouseX <= 250) {
       if (mouseY >= 260 && mouseY <= 290) {
         fill(255);
         rect(width/2, 275, 100, 30);
-        println("Exit button clicked");
+        println("Exit button clicked"); // Debugging to make sure button works properly
         exit();
       }
     }
   }
 }
 
+// Function to display game over screen
 void gameOver(boolean n) {
   if (n) {
+    // Previous game stats and highscore tab
     textAlign(CENTER);
     textSize(20);
     fill(50);
@@ -113,6 +130,7 @@ void gameOver(boolean n) {
     text("Replay", 80, 255);
     text("Menu", 180, 255);
 
+    // Color unlocks tab
     textSize(20);
     fill(50);
     strokeWeight(2);
@@ -123,6 +141,8 @@ void gameOver(boolean n) {
     fill(255);
     text("Unlocks", 310, 130);
     textSize(15);
+
+    // Conditional statements to decide whether colors are locked or unlocked depending on highest score
     if (highScore > 25) {
       Player.unlock[1] = true;
       fill(0, 200, 0);
@@ -158,31 +178,36 @@ void gameOver(boolean n) {
   }
 }
 
+// Function to handle mouse clicks in the game over screen
 void gameOverClick(boolean n) {
   if (n) {
+    // Replay button click
     if (mouseX >= 42.5 && mouseX <= 117.5) {
       if (mouseY >= 237.5 && mouseY <= 262.5) {
         fill(255);
         rect(80, 250, 75, 25);
         eliminated = false;
         playOn = true;
-        println("Replay button clicked");
+        println("Replay button clicked"); // Debugging to make sure button works properly
       }
     }
+    // Menu button click
     if (mouseX >= 142.5 && mouseX <= 217.5) {
       if (mouseY >= 237.5 && mouseY <= 262.5) {
         fill(255);
         rect(180, 250, 75, 25);
         eliminated = false;
         menuOn = true;
-        println("Menu button clicked");
+        println("Menu button clicked"); // Debugging to make sure button works properly
       }
     }
   }
 }
 
+// Function to display color selection menu
 void colorMenu(boolean n) {
   if (n) {
+    // Unlock box of first color
     textAlign(CENTER);
     textSize(15);
     fill(100);
@@ -194,6 +219,7 @@ void colorMenu(boolean n) {
     stroke(0);
     rect(100, 100, 25, 25);
 
+    // Unlock box of second color
     fill(100);
     strokeWeight(3);
     stroke(255);
@@ -203,6 +229,7 @@ void colorMenu(boolean n) {
     stroke(0);
     rect(200, 100, 25, 25);
 
+    // Unlock box of third color
     fill(100);
     strokeWeight(3);
     stroke(255);
@@ -212,6 +239,7 @@ void colorMenu(boolean n) {
     stroke(0);
     rect(300, 100, 25, 25);
 
+    // Unlock box of fourth color
     fill(100);
     strokeWeight(3);
     stroke(255);
@@ -221,6 +249,7 @@ void colorMenu(boolean n) {
     stroke(0);
     rect(150, 200, 25, 25);
 
+    // Unlock box of fifth color
     fill(100);
     strokeWeight(3);
     stroke(255);
@@ -230,6 +259,7 @@ void colorMenu(boolean n) {
     stroke(255);
     rect(250, 200, 25, 25);
 
+    // Back button
     textSize(25);
     fill(100);
     strokeWeight(3);
@@ -237,7 +267,8 @@ void colorMenu(boolean n) {
     rect(200, 350, 100, 50);
     fill(255);
     text("Back", 200, 360);
-    
+
+    // Conditional statements to check if a color is locked and hide it with a requirement display
     textSize(12);
     if (!Player.unlock[1]) {
       fill(0);
@@ -274,15 +305,18 @@ void colorMenu(boolean n) {
   }
 }
 
+// Function to handle mouse clicks in the color selection menu
 void colorMenuClick(boolean n) {
   if (n) {
+    // Back button click
     if (mouseX >= 150 && mouseX <= 250) {
       if (mouseY >= 325 && mouseY <= 375) {
         colorsOn = false;
         menuOn = true;
       }
     }
-    if(Player.unlock[0]) {
+    // Color selection 1 click
+    if (Player.unlock[0]) {
       if (mouseX >= 62.5 && mouseX <= 137.5) {
         if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 0;
@@ -291,7 +325,8 @@ void colorMenuClick(boolean n) {
         }
       }
     }
-    if(Player.unlock[1]) {
+    // Color selection 2 click
+    if (Player.unlock[1]) {
       if (mouseX >= 162.5 && mouseX <= 237.5) {
         if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 1;
@@ -300,7 +335,8 @@ void colorMenuClick(boolean n) {
         }
       }
     }
-    if(Player.unlock[2]) {
+    // Color selection 3 click
+    if (Player.unlock[2]) {
       if (mouseX >= 262.5 && mouseX <= 337.5) {
         if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 2;
@@ -309,7 +345,8 @@ void colorMenuClick(boolean n) {
         }
       }
     }
-    if(Player.unlock[3]) {
+    // Color selection 4 click
+    if (Player.unlock[3]) {
       if (mouseX >= 112.5 && mouseX <= 187.5) {
         if (mouseY >= 162.5 && mouseY <= 237.5) {
           colorNum = 3;
@@ -318,7 +355,8 @@ void colorMenuClick(boolean n) {
         }
       }
     }
-    if(Player.unlock[4]) {
+    // Color selection 5 click
+    if (Player.unlock[4]) {
       if (mouseX >= 212.5 && mouseX <= 287.5) {
         if (mouseY >= 162.5 && mouseY <= 237.5) {
           colorNum = 4;
@@ -330,45 +368,51 @@ void colorMenuClick(boolean n) {
   }
 }
 
-  void play(boolean n) {
-    if (n) {
-      textAlign(CENTER);
-      rectMode(CENTER);
-      Player.runPlayer();
-      Object.runObjects();
-    }
+// Function to handle gameplay logic
+void play(boolean n) {
+  if (n) {
+    textAlign(CENTER);
+    rectMode(CENTER);
+    // Runs all player functions
+    Player.runPlayer();
+    // Runs all object functions
+    Object.runObjects();
   }
+}
 
-  void mousePressed() {
-    menuClick(menuOn);
-    gameOverClick(eliminated);
-    colorMenuClick(colorsOn);
-  }
+// Function to handle mouse click events
+void mousePressed() {
+  menuClick(menuOn);
+  gameOverClick(eliminated);
+  colorMenuClick(colorsOn);
+}
 
-  void keyPressed() {
-    if (key == 'w' || key == 'W') {
-      wKey = true;
-    } else if (key == 's' || key == 'S') {
-      sKey = true;
-    }
-    if (key == 'a' || key == 'A') {
-      aKey = true;
-    } else if (key == 'd' || key == 'D') {
-      dKey = true;
-    }
+// Function to handle movement key hold events
+void keyPressed() {
+  if (key == 'w' || key == 'W') {
+    wKey = true;
+  } else if (key == 's' || key == 'S') {
+    sKey = true;
   }
+  if (key == 'a' || key == 'A') {
+    aKey = true;
+  } else if (key == 'd' || key == 'D') {
+    dKey = true;
+  }
+}
 
-  void keyReleased() {
-    if (key == 'w' || key == 'W') {
-      wKey = false;
-    }
-    if (key == 's' || key == 'S') {
-      sKey = false;
-    }
-    if (key == 'a' || key == 'A') {
-      aKey = false;
-    }
-    if (key == 'd' || key == 'D') {
-      dKey = false;
-    }
+// Function to handle movement key release events
+void keyReleased() {
+  if (key == 'w' || key == 'W') {
+    wKey = false;
   }
+  if (key == 's' || key == 'S') {
+    sKey = false;
+  }
+  if (key == 'a' || key == 'A') {
+    aKey = false;
+  }
+  if (key == 'd' || key == 'D') {
+    dKey = false;
+  }
+}
