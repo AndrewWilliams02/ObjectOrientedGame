@@ -41,6 +41,20 @@ void reset() {
 // Function to display the main menu
 void menu(boolean n) {
   if (n) {
+    // White background spikes
+    fill(255);
+    triangle(-50, 0, 20, 0, 0, 100);
+    triangle(-20, 0, 60, 0, 30, 80);
+    triangle(40, 0, 110, 0, 70, 65);
+    triangle(75, 0, 155, 0, 110, 50);
+    triangle(120, 0, 190, 0, 155, 65);
+    triangle(160, 0, 230, 0, 195, 55);
+    triangle(190, 0, 280, 0, 240, 60);
+    triangle(230, 0, 335, 0, 285, 70);
+    triangle(270, 0, 360, 0, 320, 60);
+    triangle(310, 0, 390, 0, 360, 75);
+    triangle(350, 0, 430, 0, 400, 90);
+    
     // Title
     textAlign(CENTER);
     textSize(25);
@@ -128,11 +142,11 @@ void gameOver(boolean n) {
     // Previous game stats and highscore tab
     textAlign(CENTER);
     textSize(20);
-    fill(50);
+    fill(0, 30, 30);
     strokeWeight(2);
     stroke(255);
     rect(130, 200, 200, 150);
-    fill(100);
+    fill(0, 60, 60);
     rect(130, 125, 100, 25);
     fill(255);
     text("Game Over", 130, 130);
@@ -141,7 +155,7 @@ void gameOver(boolean n) {
     text("Score: " + gameScore, 130, 180);
     text("Tokens collected: " + tokensCollected, 130, 200);
     text("Time survived: " + Player.seconds, 130, 220);
-    fill(100);
+    fill(0, 60, 60);
     rect(80, 250, 75, 25);
     rect(180, 250, 75, 25);
     fill(255);
@@ -150,11 +164,11 @@ void gameOver(boolean n) {
 
     // Color unlocks tab
     textSize(20);
-    fill(50);
+    fill(0, 30, 30);
     strokeWeight(2);
     stroke(255);
     rect(310, 200, 130, 150);
-    fill(100);
+    fill(0, 60, 60);
     rect(310, 125, 100, 25);
     fill(255);
     text("Unlocks", 310, 130);

@@ -15,12 +15,16 @@ public class object {
       // Initializing arrays and properties
       this.objPosition = new ArrayList<PVector>();
       this.objSpeed = new ArrayList<PVector>();
-      this.newX = new float[3];
-      this.newY = new float[3];
+      this.newX = new float[5];
+      this.newY = new float[5];
       // Setting default values
       this.objPosition.add(new PVector(0, 0));
       this.objPosition.add(new PVector(0, 0));
       this.objPosition.add(new PVector(0, 0));
+      this.objPosition.add(new PVector(0, 0));
+      this.objPosition.add(new PVector(0, 0));
+      this.objSpeed.add(new PVector(0, 0));
+      this.objSpeed.add(new PVector(0, 0));
       this.objSpeed.add(new PVector(0, 0));
       this.objSpeed.add(new PVector(0, 0));
       this.objSpeed.add(new PVector(0, 0));
@@ -57,7 +61,7 @@ public class object {
       }
       tokenPosition.y = round(tokenPosition.y);
       println("y = " + tokenPosition.y); // Debugging to make sure token spawns properly
-      
+
       tokenCollected = false;
     }
   }
@@ -82,34 +86,32 @@ public class object {
 
         // Loop to change spawn location of obstacles and they're moevement direction depending on randomSpawn value
         for (int j = 0; j < objPosition.size(); j++) {
-          switch (randomSpawn) {
-            // Cases determine spawn position and speed based on canvas edges
-          case 1:
+          // Determines spawn position and speed based on canvas edges
+          if (randomSpawn==1) {
             objPosition.get(j).set(random(25, 375), 25);
             objSpeed.get(j).set(random(-5, 5), random(2.5, 5));
-            break;
-          case 2:
+          } else if (randomSpawn==2) {
             objPosition.get(j).set(375, random(25, 375));
             objSpeed.get(j).set(random(-5, -2.5), random(-5, 5));
-            break;
-          case 3:
+          } else if (randomSpawn==3) {
             objPosition.get(j).set(random(25, 375), 375);
             objSpeed.get(j).set(random(-5, 5), random(-5, -2.5));
-            break;
-          case 4:
+          } else if (randomSpawn==4) {
             objPosition.get(j).set(25, random(25, 375));
             objSpeed.get(j).set(random(2.5, 5), random(-5, 5));
-            break;
           }
+
           newX[j] = objPosition.get(j).x;
           newY[j] = objPosition.get(j).y;
           println("obj x: " + objPosition.get(j).x + "\n" + "obj y: " + objPosition.get(j).y); // Debugging to make sure obstacles spawn correctly
         }
-        
-        objOffScreen = false;
       }
+
+      objOffScreen = false;
     }
   }
+
+
 
   // Function to update obstacles positions based on their speeds
   void objMovement() {
@@ -125,8 +127,12 @@ public class object {
     if (objPosition.get(0).x > 400 || objPosition.get(0).x < 0 || objPosition.get(0).y > 400 || objPosition.get(0).y < 0) {
       if (objPosition.get(1).x > 400 || objPosition.get(1).x < 0 || objPosition.get(1).y > 400 || objPosition.get(1).y < 0) {
         if (objPosition.get(2).x > 400 || objPosition.get(2).x < 0 || objPosition.get(2).y > 400 || objPosition.get(2).y < 0) {
-          // Set boolean to true causing new obstacles to spawn if all previous are off-screen
-          objOffScreen = true;
+          if (objPosition.get(3).x > 400 || objPosition.get(3).x < 0 || objPosition.get(3).y > 400 || objPosition.get(3).y < 0) {
+            if (objPosition.get(4).x > 400 || objPosition.get(4).x < 0 || objPosition.get(4).y > 400 || objPosition.get(4).y < 0) {
+              // Set boolean to true causing new obstacles to spawn if all previous are off-screen
+              objOffScreen = true;
+            }
+          }
         }
       }
     }
@@ -140,5 +146,7 @@ public class object {
     ellipse(objPosition.get(0).x, objPosition.get(0).y, 40, 40);
     ellipse(objPosition.get(1).x, objPosition.get(1).y, 40, 40);
     ellipse(objPosition.get(2).x, objPosition.get(2).y, 40, 40);
+    ellipse(objPosition.get(3).x, objPosition.get(3).y, 40, 40);
+    ellipse(objPosition.get(4).x, objPosition.get(4).y, 40, 40);
   }
 }
