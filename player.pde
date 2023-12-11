@@ -4,7 +4,7 @@ public class player {
   PVector position;
   float speed;
   float playerR, playerG, playerB, outline;
-  boolean unlock[], timerActive;
+  boolean colorUnlock[], shapeUnlock[], timerActive;
   int score, startTime;
   float tokenDistance;
   int elapsedTime, seconds, tokenScore;
@@ -19,12 +19,17 @@ public class player {
       this.playerG = 255;
       this.playerB = 255;
       this.outline = 0;
-      this.unlock = new boolean[5];
-      this.unlock[0] = true;
+      this.colorUnlock = new boolean[4];
+      this.shapeUnlock = new boolean[3];
+      this.colorUnlock[0] = true;
+      this.shapeUnlock[0] = true;
       this.score = 0;
       // Setting unlock flags to false initially (except first unlock)
-      for (int i = 1; i < unlock.length; i++) {
-        this.unlock[i] = false;
+      for (int i = 1; i < colorUnlock.length; i++) {
+        this.colorUnlock[i] = false;
+      }
+      for (int i = 1; i < shapeUnlock.length; i++) {
+        this.shapeUnlock[i] = false;
       }
     }
   }
@@ -35,7 +40,19 @@ public class player {
     strokeWeight(1);
     stroke(outline);
     fill(playerR, playerG, playerB);
-    rect(position.x, position.y, 10, 10);
+    
+    // Changes player shape depending on variable
+    switch(shapeNum) {
+    case 0:
+      rect(position.x, position.y, 10, 10);
+      break;
+    case 1:
+      ellipse(position.x, position.y, 10, 10);
+      break;
+    case 2:
+      triangle(position.x, position.y-7.5, position.x+7.5, position.y+7.5, position.x-7.5, position.y+7.5);
+      break;
+    }
   }
 
   // Function to handle player movement based on key inputs
@@ -110,6 +127,7 @@ public class player {
     noStroke();
 
     // Display distance from token in text
+    fill(255);
     textSize(12);
     textAlign(RIGHT);
     text("Distance to token: " + (int)distance + "m", 395, 20);
@@ -149,11 +167,6 @@ public class player {
       playerB = 255;
       outline = 0;
     } else if (n==3) {
-      playerR = 255;
-      playerG = 0;
-      playerB = 0;
-      outline = 0;
-    } else if (n==4) {
       playerR = 0;
       playerG = 0;
       playerB = 0;

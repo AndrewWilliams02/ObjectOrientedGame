@@ -1,9 +1,10 @@
 // Global variables for player and object, game states, and input flags
 player Player;
 object Object;
-boolean menuOn = true, playOn = false, eliminated = false, colorsOn = false;
+boolean menuOn = true, playOn = false, eliminated = false, customOn = false;
 boolean wKey = false, sKey = false, aKey = false, dKey = false;
 int colorNum = 0;
+int shapeNum = 0;
 int gameScore, tokensCollected, highScore;
 
 // Setup for the drawing
@@ -18,13 +19,13 @@ void setup() {
 
 
 void draw() {
-  background(0, 50, 50);
+  background((10 * sin(frameCount / 10) + 20), 0, 50);
 
   // Different game screens/states
   menu(menuOn);
   play(playOn);
   gameOver(eliminated);
-  colorMenu(colorsOn);
+  customMenu(customOn);
 }
 
 // Function to reset game stats
@@ -44,28 +45,45 @@ void menu(boolean n) {
     textAlign(CENTER);
     textSize(25);
     fill(255);
-    text("Dodge", width/2, 130);
+    text("Dodge", 200, 10 * sin(frameCount/2.5) + 120);
 
     // Play button
     textSize(15);
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(2);
     stroke(255);
-    rect(width/2, 175, 100, 30);
+    rect(175, 175, 100, 30);
     fill(255);
-    text("Play", width/2, 180);
+    text("Play", 175, 180);
+    // Play icon
+    triangle(240, 180, 240, 170, 250, 175);
+    fill(0, 0);
+    rect(245, 175, 20, 20);
 
-    // Colors button
-    fill(100);
-    rect(width/2, 225, 100, 30);
+    // Customize button
+    fill(0, 60, 60);
+    rect(225, 225, 100, 30);
     fill(255);
-    text("Colors", width/2, 230);
+    text("Customize", 225, 230);
+    // Customize Icon
+    fill(0, 0);
+    ellipse(155, 225, 20, 20);
+    fill(255);
+    ellipse(155, 225, 10, 10);
 
     // Exit button
-    fill(100);
-    rect(width/2, 275, 100, 30);
+    fill(0, 60, 60);
+    rect(175, 275, 100, 30);
     fill(255);
-    text("Exit", width/2, 280);
+    text("Exit", 175, 280);
+    // Exit icon
+    fill(0, 0);
+    rect(245, 275, 15, 20);
+    fill(255);
+    triangle(245, 275, 255, 270, 255, 280);
+    rect(255, 275, 10, 2.5);
+    
+    
   }
 }
 
@@ -73,30 +91,30 @@ void menu(boolean n) {
 void menuClick(boolean n) {
   if (n) {
     // Play button click
-    if (mouseX >= 150 && mouseX <= 250) {
+    if (mouseX >= 125 && mouseX <= 225) {
       if (mouseY >= 160 && mouseY <= 190) {
         fill(255);
-        rect(width/2, 175, 100, 25);
+        rect(175, 175, 100, 25);
         menuOn = false;
         playOn = true;
         println("Play button clicked"); // Debugging to make sure button works properly
       }
     }
     // Colors button click
-    if (mouseX >= 150 && mouseX <= 250) {
+    if (mouseX >= 175 && mouseX <= 275) {
       if (mouseY >= 210 && mouseY <= 240) {
         fill(255);
-        rect(width/2, 225, 100, 30);
+        rect(225, 225, 100, 30);
         menuOn = false;
-        colorsOn = true;
-        println("Colors button clicked"); // Debugging to make sure button works properly
+        customOn = true;
+        println("Custom button clicked"); // Debugging to make sure button works properly
       }
     }
     // Exit button click
-    if (mouseX >= 150 && mouseX <= 250) {
+    if (mouseX >= 125 && mouseX <= 225) {
       if (mouseY >= 260 && mouseY <= 290) {
         fill(255);
-        rect(width/2, 275, 100, 30);
+        rect(175, 275, 100, 30);
         println("Exit button clicked"); // Debugging to make sure button works properly
         exit();
       }
@@ -144,7 +162,7 @@ void gameOver(boolean n) {
 
     // Conditional statements to decide whether colors are locked or unlocked depending on highest score
     if (highScore > 25) {
-      Player.unlock[1] = true;
+      Player.colorUnlock[1] = true;
       fill(0, 200, 0);
       text("Color 1: Unlocked", 310, 160);
     } else {
@@ -152,7 +170,7 @@ void gameOver(boolean n) {
       text("Color 1: Locked", 310, 160);
     }
     if (highScore > 50) {
-      Player.unlock[2] = true;
+      Player.colorUnlock[2] = true;
       fill(0, 200, 0);
       text("Color 2: Unlocked", 310, 180);
     } else {
@@ -160,20 +178,28 @@ void gameOver(boolean n) {
       text("Color 2: Locked", 310, 180);
     }
     if (highScore > 100) {
-      Player.unlock[3] = true;
+      Player.colorUnlock[3] = true;
       fill(0, 200, 0);
       text("Color 3: Unlocked", 310, 200);
     } else {
       fill(200, 0, 0);
       text("Color 3: Locked", 310, 200);
     }
-    if (highScore > 200) {
-      Player.unlock[4] = true;
+    if (highScore > 35) {
+      Player.shapeUnlock[1] = true;
       fill(0, 200, 0);
-      text("Color 4: Unlocked", 310, 220);
+      text("Shape 1: Unlocked", 310, 220);
     } else {
       fill(200, 0, 0);
-      text("Color 4: Locked", 310, 220);
+      text("Shape 1: Locked", 310, 220);
+    }
+    if (highScore > 75) {
+      Player.shapeUnlock[2] = true;
+      fill(0, 200, 0);
+      text("Shape 2: Unlocked", 310, 240);
+    } else {
+      fill(200, 0, 0);
+      text("Shape 2: Locked", 310, 240);
     }
   }
 }
@@ -205,59 +231,92 @@ void gameOverClick(boolean n) {
 }
 
 // Function to display color selection menu
-void colorMenu(boolean n) {
+void customMenu(boolean n) {
   if (n) {
-    // Unlock box of first color
+    // Section Heading
+    textAlign(LEFT);
+    textSize(20);
+    text("COLORS", 10, 50);
+    
     textAlign(CENTER);
     textSize(15);
+    // Unlock box of first color
     fill(100);
     strokeWeight(3);
     stroke(255);
-    rect(100, 100, 75, 75);
+    rect(50, 100, 75, 75);
     fill(255);
     strokeWeight(2);
     stroke(0);
-    rect(100, 100, 25, 25);
+    rect(50, 100, 25, 25);
 
     // Unlock box of second color
     fill(100);
     strokeWeight(3);
     stroke(255);
-    rect(200, 100, 75, 75);
+    rect(150, 100, 75, 75);
     fill(0, 255, 0);
     strokeWeight(2);
     stroke(0);
-    rect(200, 100, 25, 25);
+    rect(150, 100, 25, 25);
 
     // Unlock box of third color
     fill(100);
     strokeWeight(3);
     stroke(255);
-    rect(300, 100, 75, 75);
+    rect(250, 100, 75, 75);
     fill(0, 0, 255);
     strokeWeight(2);
     stroke(0);
-    rect(300, 100, 25, 25);
+    rect(250, 100, 25, 25);
 
     // Unlock box of fourth color
     fill(100);
     strokeWeight(3);
     stroke(255);
-    rect(150, 200, 75, 75);
-    fill(255, 0, 0);
-    strokeWeight(2);
-    stroke(0);
-    rect(150, 200, 25, 25);
-
-    // Unlock box of fifth color
-    fill(100);
-    strokeWeight(3);
-    stroke(255);
-    rect(250, 200, 75, 75);
+    rect(350, 100, 75, 75);
     fill(0);
     strokeWeight(2);
     stroke(255);
-    rect(250, 200, 25, 25);
+    rect(350, 100, 25, 25);
+    
+    // Section Heading
+    fill(255);
+    textAlign(LEFT);
+    textSize(20);
+    text("SHAPES", 60, 200);
+    
+    textAlign(CENTER);
+    textSize(15);
+    // Unlock box of first shape
+    fill(100);
+    strokeWeight(3);
+    stroke(255);
+    rect(100, 250, 75, 75);
+    fill(255);
+    strokeWeight(2);
+    stroke(0);
+    rect(100, 250, 25, 25);
+    
+    // Unlock box of second shape
+    fill(100);
+    strokeWeight(3);
+    stroke(255);
+    rect(200, 250, 75, 75);
+    fill(255);
+    strokeWeight(2);
+    stroke(0);
+    ellipse(200, 250, 25, 25);
+    
+    // Unlock box of third shape
+    fill(100);
+    strokeWeight(3);
+    stroke(255);
+    rect(300, 250, 75, 75);
+    fill(255);
+    strokeWeight(2);
+    stroke(0);
+    triangle(300, 240, 310, 260, 290, 260);
 
     // Back button
     textSize(25);
@@ -270,97 +329,126 @@ void colorMenu(boolean n) {
 
     // Conditional statements to check if a color is locked and hide it with a requirement display
     textSize(12);
-    if (!Player.unlock[1]) {
-      fill(0);
+    if (!Player.colorUnlock[1]) {
+      fill(0, 175);
       strokeWeight(3);
       stroke(255);
-      rect(200, 100, 75, 75);
+      rect(150, 100, 75, 75);
       fill(255);
-      text("Score > 25", 200, 105);
+      text("Score > 25", 150, 105);
     }
-    if (!Player.unlock[2]) {
-      fill(0);
+    if (!Player.colorUnlock[2]) {
+      fill(0, 175);
       strokeWeight(3);
       stroke(255);
-      rect(300, 100, 75, 75);
+      rect(250, 100, 75, 75);
       fill(255);
-      text("Score > 50", 300, 105);
+      text("Score > 50", 250, 105);
     }
-    if (!Player.unlock[3]) {
-      fill(0);
+    if (!Player.colorUnlock[3]) {
+      fill(0, 175);
       strokeWeight(3);
       stroke(255);
-      rect(150, 200, 75, 75);
+      rect(350, 100, 75, 75);
       fill(255);
-      text("Score > 100", 150, 205);
+      text("Score > 100", 350, 105);
     }
-    if (!Player.unlock[4]) {
-      fill(0);
+    textSize(12);
+    if (!Player.shapeUnlock[1]) {
+      fill(0, 175);
       strokeWeight(3);
       stroke(255);
-      rect(250, 200, 75, 75);
+      rect(200, 250, 75, 75);
       fill(255);
-      text("Score > 200", 250, 205);
+      text("Score > 35", 200, 255);
+    }
+    if (!Player.shapeUnlock[2]) {
+      fill(0, 175);
+      strokeWeight(3);
+      stroke(255);
+      rect(300, 250, 75, 75);
+      fill(255);
+      text("Score > 75", 300, 255);
     }
   }
 }
 
 // Function to handle mouse clicks in the color selection menu
-void colorMenuClick(boolean n) {
+void customMenuClick(boolean n) {
   if (n) {
     // Back button click
     if (mouseX >= 150 && mouseX <= 250) {
       if (mouseY >= 325 && mouseY <= 375) {
-        colorsOn = false;
+        customOn = false;
         menuOn = true;
       }
     }
     // Color selection 1 click
-    if (Player.unlock[0]) {
-      if (mouseX >= 62.5 && mouseX <= 137.5) {
+    if (Player.colorUnlock[0]) {
+      if (mouseX >= 12.5 && mouseX <= 87.5) {
         if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 0;
-          colorsOn = false;
+          customOn = false;
           menuOn = true;
         }
       }
     }
     // Color selection 2 click
-    if (Player.unlock[1]) {
-      if (mouseX >= 162.5 && mouseX <= 237.5) {
+    if (Player.colorUnlock[1]) {
+      if (mouseX >= 112.5 && mouseX <= 187.5) {
         if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 1;
-          colorsOn = false;
+          customOn = false;
           menuOn = true;
         }
       }
     }
     // Color selection 3 click
-    if (Player.unlock[2]) {
-      if (mouseX >= 262.5 && mouseX <= 337.5) {
+    if (Player.colorUnlock[2]) {
+      if (mouseX >= 212.5 && mouseX <= 287.5) {
         if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 2;
-          colorsOn = false;
+          customOn = false;
           menuOn = true;
         }
       }
     }
     // Color selection 4 click
-    if (Player.unlock[3]) {
-      if (mouseX >= 112.5 && mouseX <= 187.5) {
-        if (mouseY >= 162.5 && mouseY <= 237.5) {
+    if (Player.colorUnlock[3]) {
+      if (mouseX >= 312.5 && mouseX <= 387.5) {
+        if (mouseY >= 62.5 && mouseY <= 137.5) {
           colorNum = 3;
-          colorsOn = false;
+          customOn = false;
           menuOn = true;
         }
       }
     }
-    // Color selection 5 click
-    if (Player.unlock[4]) {
-      if (mouseX >= 212.5 && mouseX <= 287.5) {
-        if (mouseY >= 162.5 && mouseY <= 237.5) {
-          colorNum = 4;
-          colorsOn = false;
+    // Shape selection 1 click
+    if (Player.shapeUnlock[0]) {
+      if (mouseX >= 62.5 && mouseX <= 137.5) {
+        if (mouseY >= 212.5 && mouseY <= 287.5) {
+          shapeNum = 0;
+          customOn = false;
+          menuOn = true;
+        }
+      }
+    }
+    // Shape selection 2 click
+    if (Player.shapeUnlock[1]) {
+      if (mouseX >= 162.5 && mouseX <= 237.5) {
+        if (mouseY >= 212.5 && mouseY <= 287.5) {
+          shapeNum = 1;
+          customOn = false;
+          menuOn = true;
+        }
+      }
+    }
+    // Shape selection 3 click
+    if (Player.shapeUnlock[2]) {
+      if (mouseX >= 262.5 && mouseX <= 337.5) {
+        if (mouseY >= 212.5 && mouseY <= 287.5) {
+          shapeNum = 2;
+          customOn = false;
           menuOn = true;
         }
       }
@@ -384,7 +472,7 @@ void play(boolean n) {
 void mousePressed() {
   menuClick(menuOn);
   gameOverClick(eliminated);
-  colorMenuClick(colorsOn);
+  customMenuClick(customOn);
 }
 
 // Function to handle movement key hold events
