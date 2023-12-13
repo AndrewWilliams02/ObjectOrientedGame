@@ -255,7 +255,7 @@ void customMenu(boolean n) {
     textAlign(CENTER);
     textSize(15);
     // Unlock box of first color
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(50, 100, 75, 75);
@@ -265,7 +265,7 @@ void customMenu(boolean n) {
     rect(50, 100, 25, 25);
 
     // Unlock box of second color
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(150, 100, 75, 75);
@@ -275,7 +275,7 @@ void customMenu(boolean n) {
     rect(150, 100, 25, 25);
 
     // Unlock box of third color
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(250, 100, 75, 75);
@@ -285,7 +285,7 @@ void customMenu(boolean n) {
     rect(250, 100, 25, 25);
 
     // Unlock box of fourth color
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(350, 100, 75, 75);
@@ -303,7 +303,7 @@ void customMenu(boolean n) {
     textAlign(CENTER);
     textSize(15);
     // Unlock box of first shape
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(100, 250, 75, 75);
@@ -313,7 +313,7 @@ void customMenu(boolean n) {
     rect(100, 250, 25, 25);
     
     // Unlock box of second shape
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(200, 250, 75, 75);
@@ -323,7 +323,7 @@ void customMenu(boolean n) {
     ellipse(200, 250, 25, 25);
     
     // Unlock box of third shape
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(300, 250, 75, 75);
@@ -334,7 +334,7 @@ void customMenu(boolean n) {
 
     // Back button
     textSize(25);
-    fill(100);
+    fill(0, 60, 60);
     strokeWeight(3);
     stroke(255);
     rect(200, 350, 100, 50);

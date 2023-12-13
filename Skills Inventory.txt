@@ -1,0 +1,33 @@
+1) What’s the difference between a for loop and a while loop? 
+For loops contain a initialization statement, a conditional statement, and an incrementation/decrementation statement.
+On the other hand, while loops only contain a conditional statement and continue until that condition is met.
+
+2) What’s the difference between parameters and arguments?
+Parameters are variables listed in a function, while arguments are the actual values that are passed into the function.
+
+3) What’s the difference between a class and an object?
+A class is a template for creating objects. It defines the properties and behaviours that objects in the class will have.
+However, and object is an instance of a class. It is an aspect created from the class with defined properties and behaviours.
+
+4) What is a constructor function? What does it do and when?
+A constructor function is a method in a class that initializes objects created within the class.
+It is called at the start of the program to initialize objects used within the rest of the code.
+
+5) Why should each class have its own tab in Processing?
+Each class having its own tab within processing makes it easier to read, undestand, and navigate through.
+Overall, classes having their own tabs increases the codes orginization.
+
+6) What’s the difference between an array and an ArrayList?
+An array has a fixed size that must be set in initialization, but an ArrayList have a flexible size where elements
+can be added or removed at any time.
+
+7) Why would you want to go through a list backwards, decrementing the index?
+Decrementing the index in a loop for a list is useful when removing a certain amount of items at the end of a list. It is also useful for comparing elements
+with the element before. Finally, the simplest use for a decrementing loop is to display or process a list backwards.
+
+8) When should you use PVector instead of float variables?
+PVector should be used over a float when dealing with 2 dimensional or 3 dimensional vectors such as movement and physics.
+
+9) What is a normalized vector, why is it useful?
+A normalized vecotr is a vector that has a magnitude of 1. One way a normalize vector is useful is because it ensure consistent scaling across different
+vectors, making it easier to control vector quantities without affecting direction.
